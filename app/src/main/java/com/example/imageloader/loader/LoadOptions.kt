@@ -1,4 +1,4 @@
-package com.example.imageloader
+package com.example.imageloader.loader
 
 
 /**
@@ -9,11 +9,12 @@ package com.example.imageloader
  * </pre>
  */
 data class LoadOptions(
-    val url: String = "",
+    var url: String = "",
     val error: Int = DEFAULT_ERROR_OR_PLACEHOLDER,
     val placeholder: Int = DEFAULT_ERROR_OR_PLACEHOLDER,
     val isGif: Boolean = false,
     val radius: Int = 0,
+    val isCircle: Boolean = false,
     val isSkipMemory: Boolean = false,
     val displayStyle: LoaderImageScaleType = LoaderImageScaleType.CENTER_CROP,
     val cacheStyle: LoaderCacheStrategy = LoaderCacheStrategy.RESULT,

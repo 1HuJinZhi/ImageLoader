@@ -1,4 +1,4 @@
-package com.example.imageloader
+package com.example.imageloader.loader
 
 import android.content.Context
 import android.view.View

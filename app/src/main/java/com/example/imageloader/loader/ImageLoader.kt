@@ -1,4 +1,4 @@
-package com.example.imageloader
+package com.example.imageloader.loader
 
 import android.content.Context
 import android.view.View
@@ -70,7 +70,6 @@ class ImageLoader private constructor() {
     fun getCacheSize(ctx: Context): Long {
         return mLoader?.getCacheSize(ctx) ?: error()
     }
-
 
     private fun error(): Nothing =
         throw IllegalArgumentException("You must provide an image loader strategy first!")
