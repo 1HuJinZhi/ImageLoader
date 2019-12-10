@@ -2,8 +2,8 @@ package com.example.imageloader.app
 
 import android.app.Application
 import android.content.ComponentCallbacks2
-import com.example.imageloader.glide.GlideLoaderStrategy
-import com.example.imageloader.loader.ImageLoader
+import com.hujz.imageloader.glide.GlideLoaderStrategy
+import com.hujz.imageloader.loader.ImageLoader
 
 /**
  * <pre>

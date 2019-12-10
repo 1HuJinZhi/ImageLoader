@@ -1,21 +1,28 @@
-package com.example.imageloader.glide
+package com.hujz.imageloader.glide
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Looper
 import android.view.View
 import android.widget.ImageView
+import androidx.annotation.Nullable
 import com.blankj.utilcode.util.FileUtils
+import com.blankj.utilcode.util.LogUtils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.CenterInside
+import com.bumptech.glide.load.resource.bitmap.FitCenter
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
-import com.example.imageloader.loader.ILoader
-import com.example.imageloader.loader.LoadOptions
+import com.hujz.imageloader.loader.ILoader
+import com.hujz.imageloader.loader.LoadOptions
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
 /**
@@ -59,9 +66,12 @@ class GlideLoaderStrategy : ILoader {
         return FileUtils.getLength(getCacheDir())
     }
 
+    @SuppressLint("CheckResult")
+    @Suppress("UNCHECKED_CAST")
     private fun requestImage(target: View, options: LoadOptions) {
-        val builder: RequestBuilder<Any> =
-            generateRequestBuilder(target, options) as RequestBuilder<Any>
+
+        val builder = generateRequestBuilder(target, options) as RequestBuilder<Any>
+
         builder.listener(object : RequestListener<Any> {
             override fun onLoadFailed(
                 e: GlideException?,
@@ -69,9 +79,7 @@ class GlideLoaderStrategy : ILoader {
                 target: Target<Any>?,
                 isFirstResource: Boolean
             ): Boolean {
-                if (options.loaderRequestCallback != null) {
-                    options.loaderRequestCallback?.onFailed()
-                }
+                options.loaderRequestCallback?.onFailed()
                 return false
             }
 
@@ -82,13 +90,12 @@ class GlideLoaderStrategy : ILoader {
                 dataSource: DataSource?,
                 isFirstResource: Boolean
             ): Boolean {
-                if (options.loaderRequestCallback != null) {
-                    options.loaderRequestCallback?.onSuccess()
-                }
+                options.loaderRequestCallback?.onSuccess()
                 return false
             }
 
         })
+
         if (!options.url.isBlank())
             builder.load(options.url).into(target as ImageView)
         else
@@ -115,15 +122,21 @@ class GlideLoaderStrategy : ILoader {
     /**
      * generate glide options [com.bumptech.glide.request.RequestOptions] for displaying image.
      */
+    @SuppressLint("CheckResult")
     private fun getLoaderOptions(options: LoadOptions): RequestOptions {
 
         val glideOptions = RequestOptions()
+
+        glideOptions.format(options.decodeFormat)
 
         if (options.error != LoadOptions.DEFAULT_ERROR_OR_PLACEHOLDER)
             glideOptions.fallback(options.error)
 
         if (options.placeholder != LoadOptions.DEFAULT_ERROR_OR_PLACEHOLDER)
             glideOptions.placeholder(options.placeholder)
+
+        if (options.overrideWidth != 0 && options.overrideHeight != 0)
+            glideOptions.override(options.overrideWidth, options.overrideHeight)
 
         when (options.cacheStyle) {
             LoadOptions.LoaderCacheStrategy.NONE -> glideOptions.diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -136,18 +149,34 @@ class GlideLoaderStrategy : ILoader {
             )
         }
 
-        if (options.isCircle)
-            glideOptions.apply(RequestOptions.circleCropTransform())
-        else if (options.radius != 0)
-            glideOptions.transform(RoundedCornersTransformation(options.radius, 0))
-
         if (options.isSkipMemory)
             glideOptions.skipMemoryCache(true)
 
-        when (options.displayStyle) {
-            LoadOptions.LoaderImageScaleType.CENTER_CROP -> glideOptions.centerCrop()
-            LoadOptions.LoaderImageScaleType.CENTER_INSIDE -> glideOptions.centerInside()
-            LoadOptions.LoaderImageScaleType.CENTER_FIT -> glideOptions.fitCenter()
+        if (options.roundedCorners != 0) {
+            val transform = RoundedCornersTransformation(options.roundedCorners, 0)
+            when (options.displayStyle) {
+                LoadOptions.LoaderImageScaleType.CENTER_CROP -> glideOptions.transform(
+                    transform,
+                    CenterCrop()
+                )
+                LoadOptions.LoaderImageScaleType.CENTER_INSIDE -> glideOptions.transform(
+                    transform,
+                    CenterInside()
+                )
+                LoadOptions.LoaderImageScaleType.FIT_CENTER -> glideOptions.transform(
+                    transform,
+                    FitCenter()
+                )
+                else -> {
+                }
+            }
+        } else {
+            when (options.displayStyle) {
+                LoadOptions.LoaderImageScaleType.CENTER_CROP -> glideOptions.centerCrop()
+                LoadOptions.LoaderImageScaleType.CENTER_INSIDE -> glideOptions.centerInside()
+                LoadOptions.LoaderImageScaleType.FIT_CENTER -> glideOptions.fitCenter()
+                LoadOptions.LoaderImageScaleType.CIRCLE_CROP -> glideOptions.circleCrop()
+            }
         }
 
         return glideOptions

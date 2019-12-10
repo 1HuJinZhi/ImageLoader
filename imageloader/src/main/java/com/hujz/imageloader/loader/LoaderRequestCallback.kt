@@ -1,4 +1,4 @@
-package com.example.imageloader.loader
+package com.hujz.imageloader.loader
 
 /**
  * <pre>
