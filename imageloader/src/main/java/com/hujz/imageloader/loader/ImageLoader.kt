@@ -2,6 +2,7 @@ package com.hujz.imageloader.loader
 
 import android.content.Context
 import android.view.View
+import com.bumptech.glide.Glide
 
 /**
  * <pre>
@@ -62,6 +63,20 @@ class ImageLoader private constructor() {
      */
     fun clearMemoryCache(ctx: Context) {
         mLoader?.clearMemoryCache(ctx) ?: error()
+    }
+
+    /**
+     * 暂停加载
+     */
+    fun pause(context: Context) {
+        mLoader?.pause(context) ?: error()
+    }
+
+    /**
+     * 重新加载
+     */
+    fun resume(context: Context) {
+        mLoader?.resume(context) ?: error()
     }
 
     /**

@@ -19,10 +19,10 @@ data class LoadOptions(
     var isSkipMemory: Boolean = false,
     var overrideWidth: Int = 0,
     var overrideHeight: Int = 0,
-    var displayStyle: LoaderImageScaleType = LoaderImageScaleType.FIT_CENTER,
+    var displayStyle: LoaderImageScaleType = LoaderImageScaleType.CENTER_CROP,
     var cacheStyle: LoaderCacheStrategy = LoaderCacheStrategy.RESULT,
     var loaderRequestCallback: LoaderRequestCallback? = null,
-    var decodeFormat: DecodeFormat = DecodeFormat.DEFAULT
+    var decodeFormat: DecodeFormat = DecodeFormat.PREFER_RGB_565
 ) {
     companion object {
         const val DEFAULT_ERROR_OR_PLACEHOLDER = -1

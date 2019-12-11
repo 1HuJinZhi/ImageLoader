@@ -2,6 +2,8 @@ package com.hujz.imageloader.glide
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.os.Looper
 import android.view.View
 import android.widget.ImageView
@@ -15,9 +17,13 @@ import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.CenterInside
 import com.bumptech.glide.load.resource.bitmap.FitCenter
+import com.bumptech.glide.request.Request
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.target.SizeReadyCallback
 import com.bumptech.glide.request.target.Target
+import com.bumptech.glide.request.transition.Transition
 import com.hujz.imageloader.loader.ILoader
 import com.hujz.imageloader.loader.LoadOptions
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
@@ -29,7 +35,8 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation
  *     desc   :
  * </pre>
  */
-class GlideLoaderStrategy : ILoader {
+class GlideLoaderStrategy(private val defaultImage: Int = LoadOptions.DEFAULT_ERROR_OR_PLACEHOLDER) :
+    ILoader {
 
     private fun getCacheDir() = InternalCacheDiskCacheFactory.DEFAULT_DISK_CACHE_DIR
 
@@ -93,10 +100,10 @@ class GlideLoaderStrategy : ILoader {
 
         })
 
-        if (!options.url.isBlank())
-            builder.load(options.url).into(target as ImageView)
-        else
-            throw IllegalArgumentException("You should give an image resource URL first!")
+//        if (!options.url.isBlank())
+        builder.load(options.url).into(target as ImageView)
+//        else
+//            throw IllegalArgumentException("You should give an image resource URL first!")
     }
 
     /**
@@ -128,9 +135,13 @@ class GlideLoaderStrategy : ILoader {
 
         if (options.error != LoadOptions.DEFAULT_ERROR_OR_PLACEHOLDER)
             glideOptions.fallback(options.error)
+        else
+            glideOptions.fallback(defaultImage)
 
         if (options.placeholder != LoadOptions.DEFAULT_ERROR_OR_PLACEHOLDER)
             glideOptions.placeholder(options.placeholder)
+        else
+            glideOptions.placeholder(defaultImage)
 
         if (options.overrideWidth != 0 && options.overrideHeight != 0)
             glideOptions.override(options.overrideWidth, options.overrideHeight)

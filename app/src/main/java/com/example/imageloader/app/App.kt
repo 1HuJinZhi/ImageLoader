@@ -2,6 +2,8 @@ package com.example.imageloader.app
 
 import android.app.Application
 import android.content.ComponentCallbacks2
+import com.blankj.utilcode.util.Utils
+import com.example.imageloader.R
 import com.hujz.imageloader.glide.GlideLoaderStrategy
 import com.hujz.imageloader.loader.ImageLoader
 
@@ -16,7 +18,8 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        ImageLoader.INSTANCE.init(GlideLoaderStrategy())
+        Utils.init(this)
+        ImageLoader.INSTANCE.init(GlideLoaderStrategy(R.mipmap.ic_launcher))
     }
 
     override fun onTrimMemory(level: Int) {
