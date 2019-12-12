@@ -1,6 +1,5 @@
 package com.example.imageloader
 
-import com.bumptech.glide.load.DecodeFormat
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.hujz.imageloader.loader.ImageLoader
 import kotlinx.android.synthetic.main.item_main.view.*
@@ -19,10 +18,7 @@ class MainAdapter(layoutResId: Int, data: List<String>?) :
 
         val mIvMainItem = helper.itemView.mIvMainItem
 
-        ImageLoader.INSTANCE.with {
-            url = item
-            decodeFormat = DecodeFormat.PREFER_ARGB_8888
-        }.into(mIvMainItem)
+        ImageLoader.INSTANCE.with { url = item }.into(mIvMainItem)
 
     }
 
