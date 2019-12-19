@@ -18,7 +18,7 @@ class MainAdapter(layoutResId: Int, data: List<String>?) :
 
         val mIvMainItem = helper.itemView.mIvMainItem
 
-        ImageLoader.INSTANCE.with { url = item }.into(mIvMainItem)
+        ImageLoader.instance.with { url = item }.into(mIvMainItem)
 
     }
 

@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DecodeFormat
 import com.hujz.imageloader.loader.ImageLoader
 import kotlinx.android.synthetic.main.activity_main.*
@@ -53,9 +52,9 @@ class MainActivity : AppCompatActivity() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    ImageLoader.INSTANCE.resume(this@MainActivity)
+                    ImageLoader.instance.resume(this@MainActivity)
                 } else {
-                    ImageLoader.INSTANCE.pause(this@MainActivity)
+                    ImageLoader.instance.pause(this@MainActivity)
                 }
             }
         }
@@ -70,7 +69,7 @@ class MainActivity : AppCompatActivity() {
 
         mRvMain.addOnScrollListener(mScrollListener)
 
-        ImageLoader.INSTANCE.with {
+        ImageLoader.instance.with {
             url = imag1
             decodeFormat = DecodeFormat.PREFER_ARGB_8888
         }.into(mIvMain)

@@ -19,17 +19,17 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         Utils.init(this)
-        ImageLoader.INSTANCE.init(GlideLoaderStrategy(R.mipmap.ic_launcher))
+        ImageLoader.instance.init(GlideLoaderStrategy(R.mipmap.ic_launcher))
     }
 
     override fun onTrimMemory(level: Int) {
         super.onTrimMemory(level)
         if (level == ComponentCallbacks2.TRIM_MEMORY_UI_HIDDEN)
-            ImageLoader.INSTANCE.clearMemoryCache(this)
+            ImageLoader.instance.clearMemoryCache(this)
     }
 
     override fun onLowMemory() {
         super.onLowMemory()
-        ImageLoader.INSTANCE.clearMemoryCache(this)
+        ImageLoader.instance.clearMemoryCache(this)
     }
 }

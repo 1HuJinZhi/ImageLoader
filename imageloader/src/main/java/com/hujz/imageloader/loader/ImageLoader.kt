@@ -16,7 +16,7 @@ class ImageLoader private constructor() {
     private lateinit var mOptions: LoadOptions
 
     companion object {
-        val INSTANCE: ImageLoader by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) { ImageLoader() }
+        val instance: ImageLoader by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) { ImageLoader() }
         private var mLoader: ILoader? = null
     }
 
