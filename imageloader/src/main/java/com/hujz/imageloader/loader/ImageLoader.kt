@@ -28,10 +28,6 @@ class ImageLoader private constructor() {
         mLoader = loaderStrategy
     }
 
-//    fun with(data: LoadOptions.() -> Unit) = LoadOptions().apply(data){
-//        mOptions = this
-//    }
-
     /**
      * 借助于kotlin[apply]方法以及lambda表达式来构造生成[LoadOptions]
      * 简化代码，提升可读性
