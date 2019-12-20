@@ -12,8 +12,8 @@ import com.bumptech.glide.load.DecodeFormat
  */
 data class LoadOptions(
     var url: String = "",
-    var error: Int = DEFAULT_ERROR_OR_PLACEHOLDER,
-    var placeholder: Int = DEFAULT_ERROR_OR_PLACEHOLDER,
+    var error: Int = 0,
+    var placeholder: Int = 0,
     var isGif: Boolean = false,
     var roundedCorners: Int = 0,
     var isSkipMemory: Boolean = false,
@@ -24,9 +24,6 @@ data class LoadOptions(
     var loaderRequestCallback: LoaderRequestCallback? = null,
     var decodeFormat: DecodeFormat = DecodeFormat.PREFER_RGB_565
 ) {
-    companion object {
-        const val DEFAULT_ERROR_OR_PLACEHOLDER = -1
-    }
 
     /**
      * 图片缓存策略

@@ -35,8 +35,7 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation
  *     desc   :
  * </pre>
  */
-class GlideLoaderStrategy(private val defaultImage: Int = LoadOptions.DEFAULT_ERROR_OR_PLACEHOLDER) :
-    ILoader {
+class GlideLoaderStrategy : ILoader {
 
     private fun getCacheDir() = InternalCacheDiskCacheFactory.DEFAULT_DISK_CACHE_DIR
 
@@ -133,15 +132,9 @@ class GlideLoaderStrategy(private val defaultImage: Int = LoadOptions.DEFAULT_ER
 
         glideOptions.format(options.decodeFormat)
 
-        if (options.error != LoadOptions.DEFAULT_ERROR_OR_PLACEHOLDER)
-            glideOptions.fallback(options.error)
-        else
-            glideOptions.fallback(defaultImage)
+        glideOptions.fallback(options.error)
 
-        if (options.placeholder != LoadOptions.DEFAULT_ERROR_OR_PLACEHOLDER)
-            glideOptions.placeholder(options.placeholder)
-        else
-            glideOptions.placeholder(defaultImage)
+        glideOptions.placeholder(options.placeholder)
 
         if (options.overrideWidth != 0 && options.overrideHeight != 0)
             glideOptions.override(options.overrideWidth, options.overrideHeight)
