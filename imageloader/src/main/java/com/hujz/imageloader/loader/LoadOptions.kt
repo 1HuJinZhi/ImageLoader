@@ -11,7 +11,7 @@ import com.bumptech.glide.load.DecodeFormat
  * </pre>
  */
 data class LoadOptions(
-    var url: String = "",
+    var url: Any = "",
     var error: Int = 0,
     var placeholder: Int = 0,
     var isGif: Boolean = false,

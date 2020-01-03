@@ -52,9 +52,9 @@ class MainActivity : AppCompatActivity() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    ImageLoader.instance.resume(this@MainActivity)
+                    ImageLoader.INSTANCE.resume(this@MainActivity)
                 } else {
-                    ImageLoader.instance.pause(this@MainActivity)
+                    ImageLoader.INSTANCE.pause(this@MainActivity)
                 }
             }
         }
@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
 
         mRvMain.addOnScrollListener(mScrollListener)
 
-        ImageLoader.instance.with {
+        ImageLoader.INSTANCE.with {
             url = imag1
             decodeFormat = DecodeFormat.PREFER_ARGB_8888
         }.into(mIvMain)
