@@ -1,7 +1,7 @@
 package com.example.imageloader
 
 import android.view.View
-import com.chad.library.adapter.base.BaseViewHolder
+import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import kotlinx.android.extensions.LayoutContainer
 
 /**
@@ -11,5 +11,5 @@ import kotlinx.android.extensions.LayoutContainer
  *     desc   :
  * </pre>
  */
-class KViewHolder(override val containerView: View?) : BaseViewHolder(containerView),
+class KViewHolder(override val containerView: View) : BaseViewHolder(containerView),
     LayoutContainer

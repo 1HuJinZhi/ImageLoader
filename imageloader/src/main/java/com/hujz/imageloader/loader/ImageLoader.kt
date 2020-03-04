@@ -1,7 +1,10 @@
 package com.hujz.imageloader.loader
 
+import android.app.Activity
 import android.content.Context
 import android.view.View
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import com.bumptech.glide.Glide
 
 /**
@@ -43,8 +46,24 @@ class ImageLoader private constructor() {
      * 例如：Facebook的Fresco
      * 需要注意的是：必须要确保此时[mOptions]以及初始化完毕
      */
-    fun into(target: View) {
-        mLoader?.loadImage(target, mOptions) ?: error()
+    fun into(target: View, view: View? = null) {
+        mLoader?.loadImage(target, mOptions, view) ?: error()
+    }
+
+    fun into(target: View, activity: Activity){
+        mLoader?.loadImage(target, mOptions, activity) ?: error()
+    }
+
+    fun into(target: View, context: Context){
+        mLoader?.loadImage(target, mOptions, context) ?: error()
+    }
+
+    fun into(target: View, fragment: Fragment){
+        mLoader?.loadImage(target, mOptions, fragment) ?: error()
+    }
+
+    fun into(target: View, fragmentActivity: FragmentActivity){
+        mLoader?.loadImage(target, mOptions, fragmentActivity) ?: error()
     }
 
     /**

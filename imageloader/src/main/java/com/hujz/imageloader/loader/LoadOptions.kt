@@ -23,22 +23,21 @@ data class LoadOptions(
     var cacheStyle: LoaderCacheStrategy = LoaderCacheStrategy.RESULT,
     var loaderRequestCallback: LoaderRequestCallback? = null,
     var decodeFormat: DecodeFormat = DecodeFormat.PREFER_RGB_565
-) {
+)
 
-    /**
-     * 图片缓存策略
-     */
-    enum class LoaderCacheStrategy {
-        NONE,
-        ALL,
-        SOURCE,
-        RESULT
-    }
+/**
+ * 图片缓存策略
+ */
+enum class LoaderCacheStrategy {
+    NONE,
+    ALL,
+    SOURCE,
+    RESULT
+}
 
-    enum class LoaderImageScaleType {
-        CENTER_CROP,
-        CENTER_INSIDE,
-        FIT_CENTER,
-        CIRCLE_CROP,
-    }
+enum class LoaderImageScaleType {
+    CENTER_CROP,
+    CENTER_INSIDE,
+    FIT_CENTER,
+    CIRCLE_CROP,
 }

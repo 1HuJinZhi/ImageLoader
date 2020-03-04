@@ -1,12 +1,13 @@
 package com.hujz.imageloader.glide
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.os.Looper
 import android.view.View
 import android.widget.ImageView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import com.blankj.utilcode.util.FileUtils
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
@@ -17,15 +18,13 @@ import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.CenterInside
 import com.bumptech.glide.load.resource.bitmap.FitCenter
-import com.bumptech.glide.request.Request
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.target.SizeReadyCallback
 import com.bumptech.glide.request.target.Target
-import com.bumptech.glide.request.transition.Transition
 import com.hujz.imageloader.loader.ILoader
 import com.hujz.imageloader.loader.LoadOptions
+import com.hujz.imageloader.loader.LoaderCacheStrategy
+import com.hujz.imageloader.loader.LoaderImageScaleType
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 
 /**
@@ -39,8 +38,28 @@ class GlideLoaderStrategy : ILoader {
 
     private fun getCacheDir() = InternalCacheDiskCacheFactory.DEFAULT_DISK_CACHE_DIR
 
-    override fun loadImage(target: View, loadOptions: LoadOptions) {
-        requestImage(target, loadOptions)
+    override fun loadImage(target: View, loadOptions: LoadOptions, view: View?) {
+        requestImage(target, loadOptions, view)
+    }
+
+    override fun loadImage(target: View, loadOptions: LoadOptions, activity: Activity) {
+        requestImage(target, loadOptions, activity)
+    }
+
+    override fun loadImage(target: View, loadOptions: LoadOptions, context: Context) {
+        requestImage(target, loadOptions, context)
+    }
+
+    override fun loadImage(target: View, loadOptions: LoadOptions, fragment: Fragment) {
+        requestImage(target, loadOptions, fragment)
+    }
+
+    override fun loadImage(
+        target: View,
+        loadOptions: LoadOptions,
+        fragmentActivity: FragmentActivity
+    ) {
+        requestImage(target, loadOptions, fragmentActivity)
     }
 
     override fun clearMemoryCache(context: Context) {
@@ -71,9 +90,10 @@ class GlideLoaderStrategy : ILoader {
 
     @SuppressLint("CheckResult")
     @Suppress("UNCHECKED_CAST")
-    private fun requestImage(target: View, options: LoadOptions) {
+    private fun requestImage(target: View, options: LoadOptions, with: Any? = null) {
 
-        val builder = generateRequestBuilder(target, options) as RequestBuilder<Any>
+        val builder =
+            generateRequestBuilder(target, options, with) as RequestBuilder<Any>
 
         builder.listener(object : RequestListener<Any> {
             override fun onLoadFailed(
@@ -110,14 +130,36 @@ class GlideLoaderStrategy : ILoader {
      * You can see loader option detail from [LoadOptions]
      */
     private fun generateRequestBuilder(
-        targetView: View,
-        options: LoadOptions
+        target: View,
+        options: LoadOptions,
+        with: Any? = null
     ): RequestBuilder<out Any> {
 
+        val requestManager = when (with) {
+            is View -> {
+                Glide.with(with)
+            }
+            is Activity -> {
+                Glide.with(with)
+            }
+            is Context -> {
+                Glide.with(with)
+            }
+            is Fragment -> {
+                Glide.with(with)
+            }
+            is FragmentActivity -> {
+                Glide.with(with)
+            }
+            else -> {
+                Glide.with(target)
+            }
+        }
+
         val requestBuilder = if (options.isGif)
-            Glide.with(targetView).asGif()
+            requestManager.asGif()
         else
-            Glide.with(targetView).asBitmap()
+            requestManager.asBitmap()
 
         return requestBuilder.apply(getLoaderOptions(options))
     }
@@ -140,12 +182,12 @@ class GlideLoaderStrategy : ILoader {
             glideOptions.override(options.overrideWidth, options.overrideHeight)
 
         when (options.cacheStyle) {
-            LoadOptions.LoaderCacheStrategy.NONE -> glideOptions.diskCacheStrategy(DiskCacheStrategy.NONE)
-            LoadOptions.LoaderCacheStrategy.ALL -> glideOptions.diskCacheStrategy(DiskCacheStrategy.ALL)
-            LoadOptions.LoaderCacheStrategy.SOURCE -> glideOptions.diskCacheStrategy(
+            LoaderCacheStrategy.NONE -> glideOptions.diskCacheStrategy(DiskCacheStrategy.NONE)
+            LoaderCacheStrategy.ALL -> glideOptions.diskCacheStrategy(DiskCacheStrategy.ALL)
+            LoaderCacheStrategy.SOURCE -> glideOptions.diskCacheStrategy(
                 DiskCacheStrategy.RESOURCE
             )
-            LoadOptions.LoaderCacheStrategy.RESULT -> glideOptions.diskCacheStrategy(
+            LoaderCacheStrategy.RESULT -> glideOptions.diskCacheStrategy(
                 DiskCacheStrategy.DATA
             )
         }
@@ -156,15 +198,15 @@ class GlideLoaderStrategy : ILoader {
         if (options.roundedCorners != 0) {
             val transform = RoundedCornersTransformation(options.roundedCorners, 0)
             when (options.displayStyle) {
-                LoadOptions.LoaderImageScaleType.CENTER_CROP -> glideOptions.transform(
+                LoaderImageScaleType.CENTER_CROP -> glideOptions.transform(
                     transform,
                     CenterCrop()
                 )
-                LoadOptions.LoaderImageScaleType.CENTER_INSIDE -> glideOptions.transform(
+                LoaderImageScaleType.CENTER_INSIDE -> glideOptions.transform(
                     transform,
                     CenterInside()
                 )
-                LoadOptions.LoaderImageScaleType.FIT_CENTER -> glideOptions.transform(
+                LoaderImageScaleType.FIT_CENTER -> glideOptions.transform(
                     transform,
                     FitCenter()
                 )
@@ -173,10 +215,10 @@ class GlideLoaderStrategy : ILoader {
             }
         } else {
             when (options.displayStyle) {
-                LoadOptions.LoaderImageScaleType.CENTER_CROP -> glideOptions.centerCrop()
-                LoadOptions.LoaderImageScaleType.CENTER_INSIDE -> glideOptions.centerInside()
-                LoadOptions.LoaderImageScaleType.FIT_CENTER -> glideOptions.fitCenter()
-                LoadOptions.LoaderImageScaleType.CIRCLE_CROP -> glideOptions.circleCrop()
+                LoaderImageScaleType.CENTER_CROP -> glideOptions.centerCrop()
+                LoaderImageScaleType.CENTER_INSIDE -> glideOptions.centerInside()
+                LoaderImageScaleType.FIT_CENTER -> glideOptions.fitCenter()
+                LoaderImageScaleType.CIRCLE_CROP -> glideOptions.circleCrop()
             }
         }
 

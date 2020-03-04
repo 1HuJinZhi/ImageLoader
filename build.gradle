@@ -1,16 +1,13 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-
-apply from: "config-androidx.gradle"
-
 buildscript {
-    ext.kotlin_version = '1.3.50'
+    ext.kotlin_version = '1.3.61'
     repositories {
         google()
         jcenter()
 
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.3'
+        classpath 'com.android.tools.build:gradle:3.6.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -27,4 +24,57 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+ext {
+    version_code = 1
+    version_name = "1.0"
+
+    core_ktx_version = "1.2.0"
+
+    compile_sdk_version = 29
+    build_tools_version = "29.0.2"
+    min_sdk_version = 21
+    target_sdk_version = 29
+
+    appcompat_version = "1.1.0"
+    material_version = "1.2.0-alpha03"
+    constraintlayout_version = "1.1.3"
+    recyclerview_version = "1.1.0"
+    immersionbar_version = "3.0.0"
+    recyclerview_adapter_version = "3.0.0-beta11"
+    xpopup_version = "1.8.10-x"
+    gloading_version = "1.1.0"
+    smartRefreshLayout_version = "1.1.0"
+    smartRefreshHorizontal_version = "1.0.0-beta-1"
+    shape_version = "1.6.3"
+    superTextView_version = "v3.2.5.99"
+    circleimageview_version = "3.0.1"
+    pickerView_version = "4.1.9"
+    dsl_tablayout_version = "1.4.0"
+    shadowLayout_version = "2.1.6"
+    checkHelper_version = "1.1"
+    flowHelper_version = "v1.18"
+    pictureSelector_version = "v2.4.3"
+
+    rxjava_version = "2.1.1"
+    rxhttp_version = "1.4.1"
+    rxlife_version = "1.1.0"
+    glide_version = "4.10.0"
+    glide_transformations_version = "4.1.0"
+    imageloader_version = "1.0.2"
+    uploader_version = "1.0.1"
+    ycwebview_version = "1.2.2"
+    dkplayer_version = "2.5.3"
+    bga_qrcode_zxing_version = "1.3.7"
+
+    mmkv_version = "1.0.23"
+    utilcodex_version = "1.26.0"
+    autozise_version = "1.1.2"
+    live_eventbus_version = "1.5.7"
+    skin_version = "4.0.4"
+
+    espresso_version = "3.2.0"
+    junit_test_version = "4.12"
+    junit_version = "1.1.1"
 }

@@ -11,15 +11,14 @@ import kotlinx.android.synthetic.main.item_main.view.*
  *     desc   :
  * </pre>
  */
-class MainAdapter(layoutResId: Int, data: List<String>?) :
+class MainAdapter(layoutResId: Int, data: MutableList<String>?) :
     BaseQuickAdapter<String, KViewHolder>(layoutResId, data) {
 
-    override fun convert(helper: KViewHolder, item: String) {
-
+    override fun convert(helper: KViewHolder, item: String?) {
         val mIvMainItem = helper.itemView.mIvMainItem
-
-        ImageLoader.INSTANCE.with { url = item }.into(mIvMainItem)
-
+        item?.let {
+            ImageLoader.INSTANCE.with { url = item }.into(mIvMainItem)
+        }
     }
 
 }

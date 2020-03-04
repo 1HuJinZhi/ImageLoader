@@ -1,9 +1,10 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+
 android {
-    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
-    buildToolsVersion rootProject.ext.android["buildToolsVersion"]
+    compileSdkVersion compile_sdk_version
+    buildToolsVersion build_tools_version
 
     compileOptions {
         targetCompatibility JavaVersion.VERSION_1_8
@@ -15,10 +16,10 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion rootProject.ext.android["minSdkVersion"]
-        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
-        versionCode rootProject.ext.android["versionCode"]
-        versionName rootProject.ext.android["versionName"]
+        minSdkVersion min_sdk_version
+        targetSdkVersion target_sdk_version
+        versionCode version_code
+        versionName version_name
 
         consumerProguardFiles 'consumer-rules.pro'
     }
@@ -33,13 +34,11 @@ android {
 }
 
 dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "androidx.core:core-ktx:$core_ktx_version"
 
-    implementation rootProject.ext.dependencies["kotlin"]
-    implementation rootProject.ext.dependencies["core-ktx"]
+    api "com.github.bumptech.glide:glide:$glide_version"
+    api "jp.wasabeef:glide-transformations:$glide_transformations_version"
 
-    api rootProject.ext.dependencies["glide"]
-    api rootProject.ext.dependencies["glide-transformations"]
-
-    api rootProject.ext.dependencies["utilcodex"]
-
+    implementation "com.blankj:utilcodex:$utilcodex_version"
 }
